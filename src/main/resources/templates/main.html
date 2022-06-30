@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<h3> 메인 페이지 </h3>
+
+<p> 인증 세션 확인 </p>
+<!-- 타임리프에서 인증 세션 호출을 위한 라이브러리 필요 -->
+<p th:text="${#authentication.principal}"></p>
+
+
+<p> 인증 세션 Role </p>
+<p th:text="${#authentication.authorities}"></p>
+
+<button type="button" onclick="location.href='/member/signup'"> 회원가입 </button>
+<button type="button" onclick="location.href='/member/login'"> 로그인 </button>
+<button type="button" onclick="location.href='/member/logout'"> 로그아웃 </button>
+<br>
+
+<button type="button" onclick="location.href='/member/memberonly'"> 회원만 입장 가능 </button>
+
+<button type="button" onclick="location.href='/'"> 메인으로 </button>
+</body>
+</html>
