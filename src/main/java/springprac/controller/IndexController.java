@@ -7,39 +7,39 @@ import org.springframework.web.bind.annotation.PostMapping;
 import springprac.dto.MemberDto;
 import springprac.service.MemberService;
 
-@Controller
+@Controller // 컨트롤러 클래스
 public class IndexController {
 
     @Autowired
-    MemberService memberService;
+    MemberService memberService; // 멤버서비스 클래스
 
-    @GetMapping("/")
-    public String main(){
+    @GetMapping("/") // 최상위 경로 매핑
+    public String main(){  // main.html 반환
         return "main";
     }
-    @GetMapping("/member/login")
-    public String login(){
+    @GetMapping("/member/login") // 로그인 경로 매핑
+    public String login(){ // 로그인 페이지 반환
         return "login";
     }
 
-    @GetMapping("/member/memberonly")
-    public String memberonly(){
+    @GetMapping("/member/memberonly") // 경로 매핑
+    public String memberonly(){ // memberonly 페이지 반환
         return "memberonly";
     }
 
-    @GetMapping("/member/signup")
-    public String signup(){
+    @GetMapping("/member/signup") // 경로 매핑
+    public String signup(){ // signup 페이지 반환
         return "signup";
     }
 
-    @PostMapping("/member/signup")
+    @PostMapping("/member/signup") // POST요청 경로 매핑
     public String signup(MemberDto memberDto){
-        boolean result = memberService.signup(memberDto);
+        boolean result = memberService.signup(memberDto); // 회원가입 처리 후 결과 반환
         if(result){
-            return "main";
+            return "main"; // 성공시 main.html 반환
         }
         else{
-            return "error";
+            return "error"; // 실패시 error.html 반환
         }
     }
 }

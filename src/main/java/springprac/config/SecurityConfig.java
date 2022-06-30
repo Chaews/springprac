@@ -13,13 +13,13 @@ import springprac.service.MemberService;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig extends WebSecurityConfigurerAdapter { // 웹 시큐리티 설정 관련 상속 클래스
 
     @Autowired
-    MemberService memberService;
+    MemberService memberService; // 회원 관련 서비스
 
     @Autowired
-    private PasswordEncoder passwordEncoder(){return new BCryptPasswordEncoder();}
+    private PasswordEncoder passwordEncoder(){return new BCryptPasswordEncoder();} // 비밀번호 암호화
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -41,19 +41,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .invalidateHttpSession(true) // 로그아웃성공시 세션 삭제
                 .and()
                 .csrf() // 서버에게 요청할 수 있는 페이지 제한
-                .ignoringAntMatchers("/member/logincontroller")
-                .ignoringAntMatchers("/member/signup")
+                .ignoringAntMatchers("/member/logincontroller") // 요청제한 제외시킬 URL
+                .ignoringAntMatchers("/member/signup")// 요청제한 제외시킬 URL
                 .and()
-                .exceptionHandling()
-                .accessDeniedPage("/error")
+                .exceptionHandling() // 오류페이지 발생시 시큐리티가 페이지 전환
+                .accessDeniedPage("/error")// 오류페이지 발생시 이동할 URL
                 .and()
-                .oauth2Login()
-                .userInfoEndpoint()
-                .userService(memberService);
+                .oauth2Login() // OAUTH 로그인
+                .userInfoEndpoint() // 유저 정보가 들어오는 위치
+                .userService(memberService); // 해당 서비스 클래스로 유저 정보 받음
     }
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(memberService).passwordEncoder(passwordEncoder());
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception { // 인증관리 메소드
+        auth.userDetailsService(memberService).passwordEncoder(passwordEncoder()); // 인증할 서비스 객체, 패스워드 인코딩
     }
 }
