@@ -11,14 +11,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import springprac.service.MemberService;
 
-@Configuration
-@EnableWebSecurity
+@Configuration // 설정파일
 public class SecurityConfig extends WebSecurityConfigurerAdapter { // 웹 시큐리티 설정 관련 상속 클래스
 
-    @Autowired
+    @Autowired // 생성자를 자동으로 주입
     MemberService memberService; // 회원 관련 서비스
 
-    @Autowired
+    @Autowired // 생성자를 자동으로 주입
     private PasswordEncoder passwordEncoder(){return new BCryptPasswordEncoder();} // 비밀번호 암호화
 
     @Override

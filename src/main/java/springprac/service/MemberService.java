@@ -1,8 +1,10 @@
 package springprac.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -20,10 +22,7 @@ import springprac.dto.LoginDto;
 import springprac.dto.MemberDto;
 import springprac.dto.OauthDto;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class MemberService implements UserDetailsService, OAuth2UserService<OAuth2UserRequest, OAuth2User> {
@@ -95,6 +94,32 @@ public class MemberService implements UserDetailsService, OAuth2UserService<OAut
         }
     }
 
+    public String 인증결과호출(){ // 필요할때마다 사용하기위해 인증결과호출 메소드화
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication(); // 인증세션 호출
+        Object principal = authentication.getPrincipal(); // 사이트 자체 회원인지 OAuth 유저인지 구분하기 위해 Object 선언해서 담아둔다
+        String mid = null ; // 여러분기 조건문에 대해 return을 한번에 처리하기위해 조건문 밖에 선언
+        if(principal != null ){
+            // 로그인이 되어있는 상태
+            if(principal instanceof UserDetails){ // 사이트 자체 회원일경우
+                mid = ((UserDetails)principal).getUsername(); // UserDetails 에 담겨있는 인증세션에서 아이디를 불러온다
+            }
+            else if (principal instanceof OAuth2User){ // Oauth2 유저일경우
+                Map<String, Object> attributes = ((OAuth2User) principal).getAttributes(); // 인증정보에서 카카오인지 네이버인지 구별하기 위해 MAP선언해서 담아둔다
+                if(attributes.get("response")!=null){ // 네이버 유저일경우
+                    Map<String, Object> map = (Map<String, Object>) attributes.get("response"); // 인증정보 가져와서
+                    mid = map.get("email").toString(); // 아이디를 가져온다
+                }
+                else if(attributes.get("kakao_account")!=null){ // 카카오 유저일경우
+                    Map<String, Object> map = (Map<String, Object>) attributes.get("kakao_account"); // 인증정보 가져와서
+                    mid = map.get("email").toString(); // 아이디를 가져온다
+                }
+            }
 
+        } else{
+            // 로그인이 안되어 있는 상태
+
+        }
+        return mid; // 아이디 반환
+    }
 
 }

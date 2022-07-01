@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import springprac.dto.MemberDto;
 import springprac.service.MemberService;
 
-@Controller // 컨트롤러 클래스
+@Controller // 템플릿반환 컨트롤러 클래스
 public class IndexController {
 
-    @Autowired
+    @Autowired // 생성자를 자동으로 주입
     MemberService memberService; // 멤버서비스 클래스
 
     @GetMapping("/") // 최상위 경로 매핑
